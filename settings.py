@@ -8,6 +8,7 @@ VERSION = "v5.0.0"  # TODO: move to .env
 
 # PATHS
 SWAGGER_PATH = f"/obp/{VERSION}/resource-docs/{VERSION}/swagger"
+BANK_ID = "Mobilink"
 
 
 def absolute_uri(path: str) -> str:

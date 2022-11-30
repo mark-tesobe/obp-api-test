@@ -7,13 +7,15 @@ from settings import absolute_uri
 
 
 def test_api(paths: Any) -> None:
-    for path in paths:
-        if path in [
-            f"/obp/{api_version}/api/versions",
-            f"/obp/{api_version}/banks",
-            f"/obp/{api_version}/accounts/public",
-        ]:
-            # print(request.json())
-            uri = absolute_uri(path)
-            request = requests.get(uri)
-            assert request.status_code == 200
+    for items in paths:
+        for _, details in items.items():
+            pass
+        # if path in [
+        #    f"/obp/{api_version}/api/versions",
+        #    f"/obp/{api_version}/banks",
+        #    f"/obp/{api_version}/accounts/public",
+        # ]:
+        #    # print(request.json())
+        #    uri = absolute_uri(path)
+        #    request = requests.get(uri)
+        #    assert request.status_code == 200
