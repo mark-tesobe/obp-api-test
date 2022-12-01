@@ -6,7 +6,9 @@ import requests
 from obp_python import BankApi, Configuration, EmptyClassJson
 from requests import Session
 
+from settings import BANK_PATH_URI
 from settings import LOGIN_AUTHORIZATION_HEADER as login_header
+from settings import TARGET_DEFAULT_BANK_ID as target_default_bank_id
 from settings import absolute_uri, load_swagger
 
 METHODS = ["get", "put", "post", "patch", "delete"]
@@ -95,3 +97,16 @@ def obp_bank_default_body() -> EmptyClassJson:
     """Default request json body."""
 
     return EmptyClassJson("")
+
+
+@pytest.fixture(scope="session")
+def default_bank_id(http_session: Session) -> str:
+    """Get OBP default BANK_ID."""
+
+    uri = absolute_uri(BANK_PATH_URI, True)
+    response_json = http_session.get(uri).json()
+    banks = response_json["banks"]
+    for bank in banks:
+        if bank["id"] == target_default_bank_id:
+            return str(bank["id"])
+    return str(response_json["banks"][0]["id"])

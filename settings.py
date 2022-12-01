@@ -14,6 +14,12 @@ LOGIN_AUTHORIZATION_HEADER = "DirectLogin"
 URI_BASE_PATH = f"/obp/{VERSION}"
 SWAGGER_PATH = f"{URI_BASE_PATH}/resource-docs/{VERSION}/swagger"
 
+# /banks path
+BANK_PATH_URI = "/banks"
+
+# api path
+API_PATH_URI = "/api/"
+
 
 def absolute_uri(path: str, use_base_path: bool = False) -> str:
     """Construct the absolute URI with a specified path."""
