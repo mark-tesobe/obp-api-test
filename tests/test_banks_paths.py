@@ -16,8 +16,6 @@ BANK_ID_QUERY_STRING_PARAMETER = "{BANK_ID}"
 def bank_paths(paths: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """Filter all OBP endpoints under the `/bank` path."""
 
-    for path in paths:
-        print(path)
     prefix_path = f"{base_path}/bank"
     return [items for items in paths for path in items if path.startswith(prefix_path)]
 
