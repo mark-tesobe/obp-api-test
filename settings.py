@@ -2,20 +2,28 @@ from typing import Any
 
 import requests
 
-# BASE_URI = "http://127.0.0.1:8080"  # TODO: move to .env
-BASE_URI = "https://test.openbankproject.com"
+TARGET_DEFAULT_BANK_ID = "THE_DEFAULT_BANK_ID"  # TODO: move to .env
+# TARGET_DEFAULT_BANK_ID = "Mobilink"
+
+BASE_URI = "http://127.0.0.1:8080"  # TODO: move to .env
+# BASE_URI = "https://test.openbankproject.com"  # TODO: move to .env
 VERSION = "v5.0.0"  # TODO: move to .env
+LOGIN_AUTHORIZATION_HEADER = "DirectLogin"
 
 # PATHS
-SWAGGER_PATH = f"/obp/{VERSION}/resource-docs/{VERSION}/swagger"
-BANK_ID = "Mobilink"
+URI_BASE_PATH = f"/obp/{VERSION}"
+SWAGGER_PATH = f"{URI_BASE_PATH}/resource-docs/{VERSION}/swagger"
 
 
-def absolute_uri(path: str) -> str:
-    return BASE_URI + path
+def absolute_uri(path: str, use_base_path: bool = False) -> str:
+    """Construct the absolute URI with a specified path."""
+
+    return BASE_URI + URI_BASE_PATH + path if use_base_path else BASE_URI + path
 
 
 def load_swagger() -> Any:
+    """Get OBP swagger specifications."""
+
     uri = absolute_uri(SWAGGER_PATH)
     request = requests.get(uri)
     return request.json()

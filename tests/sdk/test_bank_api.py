@@ -1,6 +1,6 @@
 from obp_python import BankApi, EmptyClassJson
 
-from settings import BANK_ID
+from settings import TARGET_DEFAULT_BANK_ID
 
 
 def test_transaction_types(
@@ -8,7 +8,7 @@ def test_transaction_types(
 ) -> None:
     """OBP SDK transaction types"""
     api_response = obp_bank_api.o_bpv2_0_0_get_transaction_types(
-        obp_bank_default_body, BANK_ID
+        obp_bank_default_body, TARGET_DEFAULT_BANK_ID
     ).to_dict()
     assert type(api_response) is dict
     assert "transaction_types" in api_response
