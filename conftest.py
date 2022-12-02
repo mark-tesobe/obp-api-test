@@ -1,9 +1,8 @@
 from typing import Any, Dict, List, Union
 
-import obp_python
 import pytest
 import requests
-from obp_python import BankApi, Configuration, EmptyClassJson
+from obp_python import Configuration, EmptyClassJson
 from requests import Session
 
 from settings import BANK_PATH_URI
@@ -77,23 +76,17 @@ def paths() -> List[Dict[str, Any]]:
 
 
 @pytest.fixture(scope="session")
-def obp_python_configuration() -> Configuration:
+def sdk_obp_python_configuration() -> Configuration:
     """OBP SDK Configuration."""
 
-    configuration = obp_python.Configuration()
-    # configuration.api_key['Authorization'] = 'Bearer xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+    configuration = Configuration()
+    configuration.api_key["Authorization"] = "n2qiswa1stx2l3gagaxnvpmpghohl4eg4al5w55m"
+    configuration.api_key_prefix["Authorization"] = "Bearer"
     return configuration
 
 
 @pytest.fixture(scope="session")
-def obp_bank_api(obp_python_configuration: Configuration) -> BankApi:
-    """Creates an OBP BankApi instance."""
-
-    return obp_python.BankApi(obp_python.ApiClient(obp_python_configuration))
-
-
-@pytest.fixture(scope="session")
-def obp_bank_default_body() -> EmptyClassJson:
+def sdk_obp_bank_default_body() -> EmptyClassJson:
     """Default request json body."""
 
     return EmptyClassJson("")
