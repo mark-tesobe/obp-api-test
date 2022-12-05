@@ -1,38 +1,21 @@
-from typing import Any, Dict, List, Tuple
+from typing import List, Tuple
 
 import pytest
 from requests import Session
 
 from conftest import Path
-from settings import URI_BASE_PATH as base_path
 from settings import USERS_PATH_URI as path_uri
 from settings import absolute_uri
 
 
-@pytest.fixture(scope="module")
-def users_paths(paths: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """Filter all OBP endpoints under the `/users` path."""
-
-    prefix_path = base_path + path_uri
-    return [items for items in paths for path in items if path.startswith(prefix_path)]
-
-
-@pytest.fixture(scope="function")
-def users_path_details(users_paths: Any) -> List[Tuple[str, List[Path]]]:
-    """Test all OBP /users paths."""
-
-    return [
-        (path, details) for items in users_paths for (path, details) in items.items()
-    ]
-
-
+@pytest.mark.parametrize("sub_paths", [path_uri], indirect=["sub_paths"])
 def test_users_get_methods(
-    users_path_details: List[Tuple[str, List[Path]]],
+    sub_paths: List[Tuple[str, List[Path]]],
     http_session: Session,
 ) -> None:
     """Test all OBP /users paths with `GET` method."""
 
-    for path, details in users_path_details:
+    for path, details in sub_paths:
         for detail in details:
             if detail.method == "get":
                 uri = absolute_uri(path)

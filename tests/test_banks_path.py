@@ -1,41 +1,24 @@
-from typing import Any, Dict, List, Tuple
+from typing import List, Tuple
 
 import pytest
 from requests import Session
 
 from conftest import Path
 from settings import BANK_PATH_URI as path_uri
-from settings import URI_BASE_PATH as base_path
 from settings import absolute_uri
 
 BANK_ID_QUERY_STRING_PARAMETER = "{BANK_ID}"
 
 
-@pytest.fixture(scope="module")
-def banks_path(paths: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """Filter all OBP endpoints under the `/banks` path."""
-
-    prefix_path = base_path + path_uri
-    return [items for items in paths for path in items if path.startswith(prefix_path)]
-
-
-@pytest.fixture(scope="function")
-def banks_path_details(banks_path: Any) -> List[Tuple[str, List[Path]]]:
-    """Test all OBP /banks paths."""
-
-    return [
-        (path, details) for items in banks_path for (path, details) in items.items()
-    ]
-
-
+@pytest.mark.parametrize("sub_paths", [path_uri], indirect=["sub_paths"])
 def test_banks_get_methods(
-    banks_path_details: List[Tuple[str, List[Path]]],
+    sub_paths: List[Tuple[str, List[Path]]],
     default_bank_id: str,
     http_session: Session,
 ) -> None:
     """Test all OBP /banks paths with `GET` method."""
 
-    for path, details in banks_path_details:
+    for path, details in sub_paths:
         for detail in details:
             # if detail.method == "get"
             #    and "Account-Public" in  detail.tags

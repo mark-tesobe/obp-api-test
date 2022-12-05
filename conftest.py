@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Tuple, Union
 
 import pytest
 import requests
@@ -8,7 +8,7 @@ from requests import Session
 from settings import BANK_PATH_URI
 from settings import LOGIN_AUTHORIZATION_HEADER as login_header
 from settings import TARGET_DEFAULT_BANK_ID as target_default_bank_id
-from settings import absolute_uri, load_swagger
+from settings import URI_BASE_PATH, absolute_uri, load_swagger
 
 METHODS = ["get", "put", "post", "patch", "delete"]
 
@@ -103,3 +103,17 @@ def default_bank_id(http_session: Session) -> str:
         if bank["id"] == target_default_bank_id:
             return str(bank["id"])
     return str(response_json["banks"][0]["id"])
+
+
+@pytest.fixture(scope="function")
+def sub_paths(request: Any, paths: Any) -> List[Tuple[str, List[Path]]]:
+    """Get sub path URI."""
+
+    path_uri = request.param
+    prefix_path = URI_BASE_PATH + path_uri
+    return [
+        (path, details)
+        for items in paths
+        for (path, details) in items.items()
+        if path.startswith(prefix_path)
+    ]

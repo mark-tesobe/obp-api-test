@@ -26,6 +26,9 @@ API_PATH_URI = "/api/"
 # users path
 USERS_PATH_URI = "/users"
 
+# users path
+MY_PATH_URI = "/my"
+
 
 def absolute_uri(path: str, use_base_path: bool = False) -> str:
     """Construct the absolute URI with a specified path."""
